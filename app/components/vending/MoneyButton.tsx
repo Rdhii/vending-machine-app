@@ -1,9 +1,18 @@
-// ...existing code...
 import React from "react";
 
-export default function MoneyButton() {
+interface MoneyButtonProps {
+  amount: number;
+  onClick: () => void;
+}
+
+export default function MoneyButton({ amount, onClick }: MoneyButtonProps) {
+  const formatAmount = (value: number) => {
+    return new Intl.NumberFormat("id-ID").format(value);
+  };
+
   return (
     <button
+      onClick={onClick}
       className="
         relative inline-flex items-center justify-center select-none
         px-4 py-2 rounded-xl font-bold text-black
@@ -24,8 +33,7 @@ export default function MoneyButton() {
         hover:cursor-pointer
       "
     >
-      Rp 50.000
+      Rp {formatAmount(amount)}
     </button>
   );
 }
-// ...existing code...
