@@ -1,8 +1,29 @@
 @import "tailwindcss";
+@tailwind utilities;
+
+@layer utilities {
+  .neon-text {
+    color: hsl(var(--primary));
+    text-shadow:
+      0 0 5px hsl(var(--primary)),
+      0 0 10px hsl(var(--primary)),
+      0 0 20px hsl(var(--primary) / 0.5);
+  }
+
+  .neon-bg {
+    background-color: hsl(var(--primary) / 0.2);
+    box-shadow:
+      0 0 10px hsl(var(--primary) / 0.5),
+      0 0 20px hsl(var(--primary) / 0.3),
+      0 0 30px hsl(var(--primary) / 0.2),
+      inset 0 0 10px hsl(var(--primary) / 0.3);
+  }
+}
 
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --primary: 175 84% 50%;
 }
 
 @theme inline {
