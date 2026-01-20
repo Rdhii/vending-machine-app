@@ -1,4 +1,4 @@
-import { Coins } from "lucide-react";
+import { Coins, RefreshCcw } from "lucide-react";
 import MoneyButton from "./MoneyButton";
 
 export default function Saldo() {
@@ -18,6 +18,10 @@ export default function Saldo() {
             <MoneyButton />
             <MoneyButton />
             <MoneyButton />
+        </div>
+        <div className="flex items-center justify-center mt-7 gap-3 border rounded-lg py-2 px-4 border-[#EF4343] text-[#EF4343]">
+            <RefreshCcw className="size-4"/>
+            <button>Kembalikan Uang</button >
         </div>
     </div>
   )

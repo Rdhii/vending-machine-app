@@ -1,6 +1,7 @@
 import Navbar from "./Navbar";
 import ProductCard from "./ProductCard";
 import Saldo from "./Saldo";
+import TakeProduct from "./TakeProduct";
 
 export default function VendingMachine() {
   return (
@@ -12,14 +13,20 @@ export default function VendingMachine() {
           <p>Pilih Produk yang Anda Inginkan</p>
         </div>
         <div className="grid grid-cols-3 gap-4">
-          <div className="grid grid-cols-3 col-span-2 border gap-4 p-4">
-            <ProductCard />
-            <ProductCard />
-            <ProductCard /> 
-            <ProductCard /> 
-            <ProductCard /> 
+          <div className="col-span-2 space-y-4">
+            <div className="grid grid-cols-3 border gap-4 p-4 rounded-lg">
+              <ProductCard />
+              <ProductCard />
+              <ProductCard />
+              <ProductCard />
+              <ProductCard />
+            </div>
+            <div className="border p-4 rounded-lg">
+              <TakeProduct />
+            </div>
           </div>
-          <div className="border">
+
+          <div className="border h-fit rounded-lg">
             <Saldo />
           </div>
         </div>
