@@ -19,6 +19,8 @@ export default function VendingMachine() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [saldo, setSaldo] = useState(0);
+  const [purchasedProduct, setPurchasedProduct] = useState<Product | null>(null);
+  const [change, setChange] = useState(0);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -44,6 +46,55 @@ export default function VendingMachine() {
 
   const handleReturnMoney = () => {
     setSaldo(0);
+    setChange(0);
+    setPurchasedProduct(null);
+  };
+
+  const handlePurchase = async (product: Product) => {
+    // Validasi stok
+    if (product.stock === 0) {
+      alert('Maaf, stok produk habis!');
+      return;
+    }
+
+    // Validasi uang
+    if (saldo < product.price) {
+      alert(`Uang tidak cukup! Anda perlu Rp ${(product.price - saldo).toLocaleString('id-ID')} lagi.`);
+      return;
+    }
+
+    try {
+      // Update stok di database
+      const newStock = product.stock - 1;
+      const response = await axios.patch(`/api/products/${product.id}`, {
+        stock: newStock
+      });
+
+      if (response.data.success) {
+        // Hitung kembalian
+        const kembalian = saldo - product.price;
+        setChange(kembalian);
+        setPurchasedProduct(product);
+        setSaldo(0);
+
+        // Update stok produk di state lokal
+        setProducts((prevProducts) =>
+          prevProducts.map((p) =>
+            p.id === product.id ? { ...p, stock: newStock } : p
+          )
+        );
+      } else {
+        alert('Gagal melakukan pembelian. Silakan coba lagi.');
+      }
+    } catch (error) {
+      console.error('Error purchasing product:', error);
+      alert('Terjadi kesalahan saat melakukan pembelian.');
+    }
+  };
+
+  const handleTakeProduct = () => {
+    setPurchasedProduct(null);
+    setChange(0);
   };
 
 
@@ -62,7 +113,11 @@ export default function VendingMachine() {
                 <div className="col-span-3 text-center py-8">Loading...</div>
               ) : products.length > 0 ? (
                 products.map((product) => (
-                  <ProductCard key={product.id} product={product} />
+                  <ProductCard 
+                    key={product.id} 
+                    product={product} 
+                    onPurchase={handlePurchase}
+                  />
                 ))
               ) : (
                 <div className="col-span-3 text-center py-8">
@@ -71,7 +126,11 @@ export default function VendingMachine() {
               )}
             </div>
             <div className="border p-4 rounded-lg">
-              <TakeProduct />
+              <TakeProduct 
+                purchasedProduct={purchasedProduct}
+                change={change}
+                onTakeProduct={handleTakeProduct}
+              />
             </div>
           </div>
 

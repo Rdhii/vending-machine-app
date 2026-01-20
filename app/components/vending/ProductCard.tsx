@@ -10,9 +10,10 @@ interface Product {
 
 interface ProductCardProps {
   product: Product;
+  onPurchase: (product: Product) => Promise<void>;
 }
 
-export default function ProductCard({ product }: ProductCardProps) {
+export default function ProductCard({ product, onPurchase }: ProductCardProps) {
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("id-ID", {
       style: "currency",
@@ -38,7 +39,8 @@ export default function ProductCard({ product }: ProductCardProps) {
         <p className="text-xs text-gray-400">Stock: {product.stock}</p>
       </div>
       <button
-        className="flex items-center justify-center rounded-lg p-1 w-full gap-2 border bg-cyan-500 hover:cursor-pointer text-black disabled:opacity-50 disabled:cursor-not-allowed"
+        onClick={() => onPurchase(product)}
+        className="flex items-center justify-center rounded-lg p-1 w-full gap-2 border bg-cyan-500 hover:cursor-pointer text-black disabled:opacity-50 disabled:cursor-not-allowed hover:bg-cyan-600 transition-colors"
         disabled={product.stock === 0}
       >
         <DollarSign className="size-4.5" />{" "}
@@ -46,4 +48,4 @@ export default function ProductCard({ product }: ProductCardProps) {
       </button>
     </div>
   );
-}   
+}
