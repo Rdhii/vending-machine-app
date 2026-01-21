@@ -85,10 +85,6 @@ model Transaction {
 ```bash
 # Prisma Studio (Database GUI)
 npx prisma studio
-
-# Build production
-npm run build
-npm start
 ```
 
 ## 📱 Pages
