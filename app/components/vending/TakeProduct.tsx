@@ -1,4 +1,4 @@
-import { Package, CheckCircle } from "lucide-react";
+import { CheckCircle } from "lucide-react";
 import React from "react";
 
 interface Product {
@@ -30,48 +30,44 @@ export default function TakeProduct({
 
   if (!purchasedProduct) {
     return (
-      <div className="flex flex-col items-center p-4 rounded-xl text-gray-400">
-        <Package className="size-12 mb-2" />
-        <p className="text-sm">Ambil Produk Disini</p>
+      <div className="flex items-center justify-center p-6 text-gray-500">
+        <p className="text-sm">Belum ada produk yang dibeli</p>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col items-center p-4 rounded-xl space-y-4">
-      <CheckCircle className="size-12 text-green-500 mb-2" />
-      <div className="text-center space-y-2">
-        <p className="text-lg font-bold text-green-500">Pembelian Berhasil!</p>
-        <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-3 space-y-1">
-          <p className="text-sm text-gray-300">
-            Produk:{" "}
-            <span className="font-semibold text-white">
-              {purchasedProduct.name}
-            </span>
+    <div className="bg-[#1a2332] border border-gray-700 rounded-xl p-4">
+      <div className="flex items-center gap-3">
+        {/* Success Icon */}
+        <CheckCircle className="size-6 text-cyan-400 flex-shrink-0" />
+
+        {/* Success Text */}
+        <p className="text-lg font-semibold text-cyan-400">
+          Pembelian Berhasil!
+        </p>
+      </div>
+
+      <div className="flex items-center gap-4 mt-4">
+        {/* Product Image */}
+        <div className="flex-shrink-0">
+          <img
+            src={purchasedProduct.imageUrl}
+            alt={purchasedProduct.name}
+            className="w-16 h-16 rounded-lg object-cover"
+          />
+        </div>
+
+        {/* Product Details */}
+        <div className="flex-grow">
+          <p className="text-white font-semibold text-lg mb-1">
+            {purchasedProduct.name}
           </p>
-          <p className="text-sm text-gray-300">
-            Harga:{" "}
-            <span className="font-semibold text-[#14EBD9]">
-              {formatPrice(purchasedProduct.price)}
-            </span>
+          <p className="text-orange-400 font-medium">
+            Kembalian: {formatPrice(change)}
           </p>
-          {change > 0 && (
-            <p className="text-sm text-gray-300">
-              Kembalian:{" "}
-              <span className="font-semibold text-yellow-400">
-                {formatPrice(change)}
-              </span>
-            </p>
-          )}
         </div>
       </div>
-      <button
-        onClick={onTakeProduct}
-        className="bg-green-500 hover:bg-green-600 text-black font-semibold px-6 py-2 rounded-lg transition-colors flex items-center gap-2"
-      >
-        <Package className="size-4" />
-        Ambil Produk
-      </button>
     </div>
   );
 }

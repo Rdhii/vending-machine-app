@@ -19,20 +19,22 @@ export default function VendingMachine() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [saldo, setSaldo] = useState(0);
-  const [purchasedProduct, setPurchasedProduct] = useState<Product | null>(null);
+  const [purchasedProduct, setPurchasedProduct] = useState<Product | null>(
+    null,
+  );
   const [change, setChange] = useState(0);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get('/api/products');
+        const response = await axios.get("/api/products");
         if (response.data.success) {
           setProducts(response.data.data);
         } else {
-          console.error('Failed to fetch products');
+          console.error("Failed to fetch products");
         }
       } catch (error) {
-        console.error('Error fetching products:', error);
+        console.error("Error fetching products:", error);
       } finally {
         setLoading(false);
       }
@@ -53,13 +55,15 @@ export default function VendingMachine() {
   const handlePurchase = async (product: Product) => {
     // Validasi stok
     if (product.stock === 0) {
-      alert('Maaf, stok produk habis!');
+      alert("Maaf, stok produk habis!");
       return;
     }
 
     // Validasi uang
     if (saldo < product.price) {
-      alert(`Uang tidak cukup! Anda perlu Rp ${(product.price - saldo).toLocaleString('id-ID')} lagi.`);
+      alert(
+        `Uang tidak cukup! Anda perlu Rp ${(product.price - saldo).toLocaleString("id-ID")} lagi.`,
+      );
       return;
     }
 
@@ -67,12 +71,21 @@ export default function VendingMachine() {
       // Update stok di database
       const newStock = product.stock - 1;
       const response = await axios.patch(`/api/products/${product.id}`, {
-        stock: newStock
+        stock: newStock,
       });
 
       if (response.data.success) {
         // Hitung kembalian
         const kembalian = saldo - product.price;
+
+        // Simpan transaksi ke database
+        await axios.post("/api/transactions", {
+          productId: product.id,
+          totalPrice: product.price,
+          cash: saldo,
+          change: kembalian,
+        });
+
         setChange(kembalian);
         setPurchasedProduct(product);
         setSaldo(0);
@@ -80,15 +93,15 @@ export default function VendingMachine() {
         // Update stok produk di state lokal
         setProducts((prevProducts) =>
           prevProducts.map((p) =>
-            p.id === product.id ? { ...p, stock: newStock } : p
-          )
+            p.id === product.id ? { ...p, stock: newStock } : p,
+          ),
         );
       } else {
-        alert('Gagal melakukan pembelian. Silakan coba lagi.');
+        alert("Gagal melakukan pembelian. Silakan coba lagi.");
       }
     } catch (error) {
-      console.error('Error purchasing product:', error);
-      alert('Terjadi kesalahan saat melakukan pembelian.');
+      console.error("Error purchasing product:", error);
+      alert("Terjadi kesalahan saat melakukan pembelian.");
     }
   };
 
@@ -96,7 +109,6 @@ export default function VendingMachine() {
     setPurchasedProduct(null);
     setChange(0);
   };
-
 
   return (
     <div className="min-h-screen bg-background p-4 md:p-8">
@@ -113,9 +125,9 @@ export default function VendingMachine() {
                 <div className="col-span-3 text-center py-8">Loading...</div>
               ) : products.length > 0 ? (
                 products.map((product) => (
-                  <ProductCard 
-                    key={product.id} 
-                    product={product} 
+                  <ProductCard
+                    key={product.id}
+                    product={product}
                     onPurchase={handlePurchase}
                   />
                 ))
@@ -126,7 +138,7 @@ export default function VendingMachine() {
               )}
             </div>
             <div className="border p-4 rounded-lg">
-              <TakeProduct 
+              <TakeProduct
                 purchasedProduct={purchasedProduct}
                 change={change}
                 onTakeProduct={handleTakeProduct}
@@ -135,10 +147,10 @@ export default function VendingMachine() {
           </div>
 
           <div className="border h-fit rounded-lg">
-            <Saldo 
-              saldo={saldo} 
-              onAddMoney={handleAddMoney} 
-              onReturnMoney={handleReturnMoney} 
+            <Saldo
+              saldo={saldo}
+              onAddMoney={handleAddMoney}
+              onReturnMoney={handleReturnMoney}
             />
           </div>
         </div>

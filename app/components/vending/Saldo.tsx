@@ -41,9 +41,9 @@ export default function Saldo({
           />
         ))}
       </div>
-      <div className="flex items-center justify-center mt-7 gap-3 border rounded-lg py-2 px-4 border-[#EF4343] text-[#EF4343] hover:bg-[#EF4343]/10 transition-colors">
+      <div className="flex items-center justify-center mt-7 gap-3 border rounded-lg py-2 px-4 border-[#EF4343] text-[#EF4343] hover:bg-[#EF4343]/10 transition-colors hover:cursor-pointer">
         <RefreshCcw className="size-4" />
-        <button onClick={onReturnMoney}>Kembalikan Uang</button>
+        <button onClick={onReturnMoney} className="hover:cursor-pointer">Kembalikan Uang</button>
       </div>
     </div>
   );
