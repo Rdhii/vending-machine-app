@@ -40,7 +40,7 @@ export default function TakeProduct({
     <div className="bg-[#1a2332] border border-gray-700 rounded-xl p-4">
       <div className="flex items-center gap-3">
         {/* Success Icon */}
-        <CheckCircle className="size-6 text-cyan-400 flex-shrink-0" />
+        <CheckCircle className="size-6 text-cyan-400 shrink-0" />
 
         {/* Success Text */}
         <p className="text-lg font-semibold text-cyan-400">
@@ -59,7 +59,7 @@ export default function TakeProduct({
         </div>
 
         {/* Product Details */}
-        <div className="flex-grow">
+        <div className="grow">
           <p className="text-white font-semibold text-lg mb-1">
             {purchasedProduct.name}
           </p>

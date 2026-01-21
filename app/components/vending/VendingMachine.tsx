@@ -6,6 +6,7 @@ import ProductCard from "./ProductCard";
 import Saldo from "./Saldo";
 import TakeProduct from "./TakeProduct";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 interface Product {
   id: number;
@@ -55,13 +56,13 @@ export default function VendingMachine() {
   const handlePurchase = async (product: Product) => {
     // Validasi stok
     if (product.stock === 0) {
-      alert("Maaf, stok produk habis!");
+      toast.error("Maaf, stok produk habis!");
       return;
     }
 
     // Validasi uang
     if (saldo < product.price) {
-      alert(
+      toast.warning(
         `Uang tidak cukup! Anda perlu Rp ${(product.price - saldo).toLocaleString("id-ID")} lagi.`,
       );
       return;
@@ -96,12 +97,13 @@ export default function VendingMachine() {
             p.id === product.id ? { ...p, stock: newStock } : p,
           ),
         );
+        toast.success(`Berhasil membeli ${product.name}!`);
       } else {
-        alert("Gagal melakukan pembelian. Silakan coba lagi.");
+        toast.error("Gagal melakukan pembelian. Silakan coba lagi.");
       }
     } catch (error) {
       console.error("Error purchasing product:", error);
-      alert("Terjadi kesalahan saat melakukan pembelian.");
+      toast.error("Terjadi kesalahan saat melakukan pembelian.");
     }
   };
 
@@ -115,14 +117,20 @@ export default function VendingMachine() {
       <Navbar />
       <div className="rounded-2xl border p-4 mx-auto max-w-4xl">
         <div className="text-center mb-6">
-          <h1 className="text-2xl font-bold mb-1 neon-text">VENDING MACHINE</h1>
-          <p>Pilih Produk yang Anda Inginkan</p>
+          <h1 className="text-xl md:text-2xl font-bold mb-1 neon-text">
+            VENDING MACHINE
+          </h1>
+          <p className="text-sm md:text-base">
+            Pilih Produk yang Anda Inginkan
+          </p>
         </div>
-        <div className="grid grid-cols-3 gap-4">
-          <div className="col-span-2 space-y-4">
-            <div className="grid grid-cols-3 border gap-4 p-4 rounded-lg">
+        <div className="flex flex-col md:grid md:grid-cols-3 gap-4">
+          <div className="md:col-span-2 space-y-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 border gap-3 md:gap-4 p-3 md:p-4 rounded-lg">
               {loading ? (
-                <div className="col-span-3 text-center py-8">Loading...</div>
+                <div className="col-span-2 md:col-span-3 text-center py-8">
+                  Loading...
+                </div>
               ) : products.length > 0 ? (
                 products.map((product) => (
                   <ProductCard
@@ -132,7 +140,7 @@ export default function VendingMachine() {
                   />
                 ))
               ) : (
-                <div className="col-span-3 text-center py-8">
+                <div className="col-span-2 md:col-span-3 text-center py-8">
                   Tidak ada produk
                 </div>
               )}

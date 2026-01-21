@@ -1,36 +1,102 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🤖 Vending Machine App
 
-## Getting Started
+Aplikasi vending machine dengan Next.js 15, TypeScript, Prisma ORM, dan PostgreSQL.
 
-First, run the development server:
+**Fitur:** Customer interface untuk beli produk, Admin panel untuk CRUD produk, History transaksi.
+
+## 🚀 Quick Start
+
+### 1. Clone & Install
+
+```bash
+git clone https://github.com/Rdhii/vending-machine-app.git
+cd vending-machine-app
+npm install
+```
+
+### 2. Setup Database
+
+Buat file `.env` dan tambahkan connection string PostgreSQL:
+
+```env
+DATABASE_URL="postgresql://USER:PASSWORD@HOST:PORT/DATABASE?schema=public"
+```
+
+**Database gratis:** [console.prisma.io](https://console.prisma.io)
+
+### 3. Setup Prisma
+
+```bash
+# Generate Prisma Client
+npx prisma generate
+
+# Jalankan migrasi (membuat tabel Product & Transaction)
+npx prisma migrate dev --name init
+```
+
+### 4. Jalankan Aplikasi
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Buka `http://localhost:3000`
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📡 API Endpoints
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+**Products:**
 
-## Learn More
+- `GET /api/products` - Get all products
+- `POST /api/products` - Create product
+- `PUT /api/products/[id]` - Update product
+- `PATCH /api/products/[id]` - Partial update
+- `DELETE /api/products/[id]` - Delete product
 
-To learn more about Next.js, take a look at the following resources:
+**Transactions:**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `GET /api/transactions` - Get all transactions
+- `POST /api/transactions` - Create transaction
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🗄️ Database Schema
 
-## Deploy on Vercel
+```prisma
+model Product {
+  id          Int      @id @default(autoincrement())
+  name        String
+  price       Float
+  stock       Int      @default(0)
+  imageUrl    String
+  transactions Transaction[]
+}
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+model Transaction {
+  id          Int      @id @default(autoincrement())
+  productId   Int
+  totalPrice  Float
+  cash        Float
+  change      Float
+  createdAt   DateTime @default(now())
+  product     Product  @relation(fields: [productId], references: [id])
+}
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🛠️ Tools
+
+```bash
+# Prisma Studio (Database GUI)
+npx prisma studio
+
+# Build production
+npm run build
+npm start
+```
+
+## 📱 Pages
+
+- `/` - Vending machine (customer)
+- `/admin` - Product management
+- `/history` - Transaction history
+
+## 🔧 Tech Stack
+
+Next.js 15 • TypeScript • Prisma • PostgreSQL • Tailwind CSS • React Hook Form • Yup • React Toastify • Axios

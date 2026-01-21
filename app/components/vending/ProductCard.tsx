@@ -32,10 +32,11 @@ export default function ProductCard({ product, onPurchase }: ProductCardProps) {
         />
       </div>
       <h2 className="text-sm font-semibold line-clamp-1">{product.name}</h2>
-      <div className="flex justify-between items-center">
-        <p className="text-lg font-bold text-[#14EBD9]">
-          {formatPrice(product.price)}
-        </p>
+      <p className="text-lg font-bold text-[#14EBD9]">
+        {formatPrice(product.price)}
+      </p>
+      <p className="text-xs text-gray-400 md:hidden">Stock: {product.stock}</p>
+      <div className="hidden md:flex justify-between items-center">
         <p className="text-xs text-gray-400">Stock: {product.stock}</p>
       </div>
       <button
