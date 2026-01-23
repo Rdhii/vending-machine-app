@@ -14,6 +14,7 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product, onPurchase }: ProductCardProps) {
+  
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("id-ID", {
       style: "currency",

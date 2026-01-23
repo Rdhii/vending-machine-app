@@ -47,13 +47,13 @@ export default function Saldo({
           onClick={() => onAddMoney(denominations[4])}
         />
       </div>
-      <button
+      {/* <button
         onClick={onReturnMoney}
         className="w-full flex items-center justify-center gap-2 border rounded-lg py-3 px-4 border-[#EF4343] text-[#EF4343] hover:bg-[#EF4343]/10 transition-colors cursor-pointer"
       >
         <RefreshCcw className="size-4" />
         <span className="text-sm font-medium cursor-pointer">Kembalikan Uang</span>
-      </button>
+      </button> */}
     </div>
   );
 }

@@ -18,7 +18,6 @@ interface TakeProductProps {
 export default function TakeProduct({
   purchasedProduct,
   change,
-  onTakeProduct,
 }: TakeProductProps) {
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("id-ID", {

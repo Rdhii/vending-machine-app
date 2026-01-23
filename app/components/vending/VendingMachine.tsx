@@ -7,6 +7,7 @@ import Saldo from "./Saldo";
 import TakeProduct from "./TakeProduct";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { RefreshCcw } from "lucide-react";
 
 interface Product {
   id: number;
@@ -144,13 +145,22 @@ export default function VendingMachine() {
                   Tidak ada produk
                 </div>
               )}
-            </div>
-            <div className="border p-4 rounded-lg">
-              <TakeProduct
-                purchasedProduct={purchasedProduct}
-                change={change}
-                onTakeProduct={handleTakeProduct}
-              />
+              <div className="col-span-3">
+              {saldo > 0 && (
+              <button
+                onClick={handleReturnMoney}
+                className="w-full flex items-center justify-center gap-2 border rounded-lg py-3 px-4 border-[#EF4343] text-[#EF4343] hover:bg-[#EF4343]/10 transition-colors cursor-pointer"
+              >
+                <RefreshCcw className="size-4" />
+                <span className="text-sm font-medium cursor-pointer">
+                  Kembalikan Uang
+                </span>
+              </button>
+
+              )}
+
+              </div>
+
             </div>
           </div>
 
@@ -159,6 +169,11 @@ export default function VendingMachine() {
               saldo={saldo}
               onAddMoney={handleAddMoney}
               onReturnMoney={handleReturnMoney}
+            />
+            <TakeProduct
+              purchasedProduct={purchasedProduct}
+              change={change}
+              onTakeProduct={handleTakeProduct}
             />
           </div>
         </div>

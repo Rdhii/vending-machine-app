@@ -96,10 +96,12 @@ export default function ProductList() {
       if (response.data.success) {
         setProducts(products.filter((p) => p.id !== id));
         toast.success("Produk berhasil dihapus!");
+        console.log("Deleted product with id:", id);
       }
     } catch (error) {
       console.error("Error deleting product:", error);
       toast.error("Gagal menghapus produk!");
+      console.log("error", error);
     }
   };
 
